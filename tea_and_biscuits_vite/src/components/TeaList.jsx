@@ -1,11 +1,14 @@
-const TeaList = ({ teas }) => {
+const TeaList = ({ teas, handleTeaDelete }) => {
   return (
     <div id="tea-list">
       <h2>All the teas!</h2>
       <ul>
         {teas.map(tea => {
           return (
-            <li key={tea.name}>{tea.name} by {tea.brand}</li>
+            <li key={tea.id}>
+              <button onClick={() =>handleTeaDelete(tea)}>Delete </button>
+              {tea.name} by {tea.brand}
+            </li>
           )
         })}
       </ul>

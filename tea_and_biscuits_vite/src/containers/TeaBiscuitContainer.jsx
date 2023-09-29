@@ -33,6 +33,18 @@ const TeasContainer = () => {
     }).then(() => fetchTeas());
   };
 
+  const handleTeaDelete = (tea) => {
+    fetch(BASE_URL + `/api/teas/${tea.id}`, {
+      method: "DELETE",
+    }).then(() => fetchTeas());
+  };
+
+  const handleBiscuitDelete = (biscuit) => {
+    fetch(BASE_URL + `/api/teas/${biscuit.id}`, {
+      method: "DELETE",
+    }).then(() => fetchBiscuits());
+  };
+
   const handleBiscuitSubmit = (newBiscuit) => {
     fetch(BASE_URL + "/api/biscuits", {
       method: "POST",
@@ -47,8 +59,8 @@ const TeasContainer = () => {
         onTeaSubmit={handleTeaSubmit}
         onBiscuitSubmit={handleBiscuitSubmit}
       />
-      <TeaList teas={teas} />
-      <BiscuitList biscuits={biscuits} />
+      <TeaList teas={teas} handleTeaDelete={handleTeaDelete}/>
+      <BiscuitList biscuits={biscuits} handleBiscuitDelete={handleBiscuitDelete} />
     </>
   );
 };
