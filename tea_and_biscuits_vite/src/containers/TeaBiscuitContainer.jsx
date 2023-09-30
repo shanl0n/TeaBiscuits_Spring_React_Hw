@@ -30,7 +30,7 @@ const TeasContainer = () => {
     console.log(newTea);
     if (newTea.id) {
       handleTeaUpdate(newTea);
-      return; 
+      return;
     }
     fetch(BASE_URL + "/api/teas", {
       method: "POST",
@@ -67,7 +67,7 @@ const TeasContainer = () => {
     fetch(BASE_URL + `/api/biscuits/${biscuit.id}`, {
       method: "PUT",
       body: JSON.stringify(biscuit),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     }).then(() => fetchBiscuits());
     setCurrentlyUpdating(undefined);
   };
@@ -76,7 +76,7 @@ const TeasContainer = () => {
     fetch(BASE_URL + `/api/teas/${tea.id}`, {
       method: "PUT",
       body: JSON.stringify(tea),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     }).then(() => fetchTeas());
     setCurrentlyUpdating(undefined);
   };
@@ -92,9 +92,16 @@ const TeasContainer = () => {
         onBiscuitSubmit={handleBiscuitSubmit}
         initialValues={currentlyUpdating}
       />
-      <TeaList teas={teas} onDelete={handleTeaDelete} onShowUpdate={handleShowUpdate} />
-      <BiscuitList biscuits={biscuits} onDelete={handleBiscuitDelete} 
-      onShowUpdate={handleShowUpdate} />
+      <TeaList
+        teas={teas}
+        onDelete={handleTeaDelete}
+        onShowUpdate={handleShowUpdate}
+      />
+      <BiscuitList
+        biscuits={biscuits}
+        onDelete={handleBiscuitDelete}
+        onShowUpdate={handleShowUpdate}
+      />
     </>
   );
 };
