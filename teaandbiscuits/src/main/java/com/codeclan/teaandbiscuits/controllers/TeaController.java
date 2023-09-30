@@ -37,8 +37,8 @@ public class TeaController {
 	@PutMapping(value = "api/teas/{id}")
 	public Tea replaceTea(@PathVariable Long id, @RequestBody Tea newTea) {
 		return teaRepository.findById(id).map(tea -> {
-			tea.setBrand(newTea.getName());
-			tea.setName(newTea.getBrand());
+			tea.setBrand(newTea.getBrand());
+			tea.setName(newTea.getName());
 			return teaRepository.save(tea);
 		}).orElseGet(() -> {
 			newTea.setId(id);

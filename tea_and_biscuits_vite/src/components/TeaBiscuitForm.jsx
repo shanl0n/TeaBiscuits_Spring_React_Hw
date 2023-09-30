@@ -1,16 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const TeaBiscuitForm = ({ onTeaSubmit, onBiscuitSubmit }) => {
+
+export const Types = {
+  TEAS: 'teas',
+  BISCUITS: 'biscuits'
+}
+
+const TeaBiscuitForm = ({ onTeaSubmit, onBiscuitSubmit,
+  initialValues}) => {
 
   const [name, setName] = useState('')
   const [brand, setBrand] = useState('')
   const [type, setType] = useState('')
 
   // used as an enum or look-up object
-  const Types = {
-    TEAS: 'teas',
-    BISCUITS: 'biscuits'
-  }
+
+  useEffect(() => {
+    if (initialValues) {
+      setName(initialValues.name || '');
+      setBrand(initialValues.brand || '');
+      setType(initialValues.type || '');
+    }
+  }, [initialValues]);
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -27,13 +38,14 @@ const TeaBiscuitForm = ({ onTeaSubmit, onBiscuitSubmit }) => {
   const resetForm = () => {
     setName('')
     setBrand('')
-    setType('')
+    if (!initialValues.type) setType('')
   }
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
     // ES6's object property shorthand, when key name and variable name are the same:
     const payload = {
+      id: initialValues?.id,
       name, // shorthand for `name: name` 
       brand // shorthand for `brand: brand`
     }
@@ -44,6 +56,7 @@ const TeaBiscuitForm = ({ onTeaSubmit, onBiscuitSubmit }) => {
 
   return (
     <form onSubmit={handleFormSubmit}>
+      <input type="text" name="id" value={initialValues?.id} hidden/>
       <label htmlFor="name">Name:</label>
       <input type="text" name="name" value={name} onChange={handleNameChange} />
 
@@ -51,12 +64,12 @@ const TeaBiscuitForm = ({ onTeaSubmit, onBiscuitSubmit }) => {
       <input type="text" name="brand" value={brand} onChange={handleBrandChange} />
 
       <label htmlFor="type">Type</label>
-      <select name="type" value={type} onChange={handleTypeChange}>
+      <select name="type" value={type} onChange={handleTypeChange} disabled={initialValues?.type}>
         <option value="" disabled>Choose...</option>
         <option value={Types.TEAS}>Tea</option>
         <option value={Types.BISCUITS}>Biscuit</option>
       </select>
-
+        
       <input type="submit" value="Save" />
     </form>
   )

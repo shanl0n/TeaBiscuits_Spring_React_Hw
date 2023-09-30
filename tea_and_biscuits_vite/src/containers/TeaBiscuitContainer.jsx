@@ -6,6 +6,7 @@ import TeaBiscuitForm from "../components/TeaBiscuitForm";
 const TeasContainer = () => {
   const [teas, setTeas] = useState([]);
   const [biscuits, setBiscuits] = useState([]);
+  const [currentlyUpdating, setCurrentlyUpdating] = useState();
   const BASE_URL = "http://localhost:8080";
 
   useEffect(() => {
@@ -26,6 +27,11 @@ const TeasContainer = () => {
   };
 
   const handleTeaSubmit = (newTea) => {
+    console.log(newTea);
+    if (newTea.id) {
+      handleTeaUpdate(newTea);
+      return; 
+    }
     fetch(BASE_URL + "/api/teas", {
       method: "POST",
       body: JSON.stringify(newTea),
@@ -34,6 +40,10 @@ const TeasContainer = () => {
   };
 
   const handleBiscuitSubmit = (newBiscuit) => {
+    if (newBiscuit.id) {
+      handleBiscuitUpdate(newBiscuit);
+      return;
+    }
     fetch(BASE_URL + "/api/biscuits", {
       method: "POST",
       body: JSON.stringify(newBiscuit),
@@ -53,18 +63,38 @@ const TeasContainer = () => {
     }).then(() => fetchBiscuits());
   };
 
-  // const handleTeaUpdate = (tea) => {
-  //   fetch(BASE_URL + '/')
-  // }
+  const handleBiscuitUpdate = (biscuit) => {
+    fetch(BASE_URL + `/api/biscuits/${biscuit.id}`, {
+      method: "PUT",
+      body: JSON.stringify(biscuit),
+      headers: { "Content-Type": "application/json" }
+    }).then(() => fetchBiscuits());
+    setCurrentlyUpdating(undefined);
+  };
+
+  const handleTeaUpdate = (tea) => {
+    fetch(BASE_URL + `/api/teas/${tea.id}`, {
+      method: "PUT",
+      body: JSON.stringify(tea),
+      headers: { "Content-Type": "application/json" }
+    }).then(() => fetchTeas());
+    setCurrentlyUpdating(undefined);
+  };
+
+  const handleShowUpdate = (values) => {
+    setCurrentlyUpdating(values);
+  };
 
   return (
     <>
       <TeaBiscuitForm
         onTeaSubmit={handleTeaSubmit}
         onBiscuitSubmit={handleBiscuitSubmit}
+        initialValues={currentlyUpdating}
       />
-      <TeaList teas={teas} handleTeaDelete={handleTeaDelete}/>
-      <BiscuitList biscuits={biscuits} handleBiscuitDelete={handleBiscuitDelete} />
+      <TeaList teas={teas} onDelete={handleTeaDelete} onShowUpdate={handleShowUpdate} />
+      <BiscuitList biscuits={biscuits} onDelete={handleBiscuitDelete} 
+      onShowUpdate={handleShowUpdate} />
     </>
   );
 };

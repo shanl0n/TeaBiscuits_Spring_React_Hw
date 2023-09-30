@@ -1,4 +1,6 @@
-const TeaList = ({ teas, handleTeaDelete }) => {
+import { Types } from "./TeaBiscuitForm"
+
+const TeaList = ({ teas, onDelete, onShowUpdate }) => {
   return (
     <div id="tea-list">
       <h2>All the teas!</h2>
@@ -6,7 +8,11 @@ const TeaList = ({ teas, handleTeaDelete }) => {
         {teas.map(tea => {
           return (
             <li key={tea.id}>
-              <button onClick={() =>handleTeaDelete(tea)}>Delete </button>
+              <button onClick={() =>onDelete(tea)}>Delete </button>
+              <button onClick={() =>onShowUpdate({
+                ...tea,
+                type: Types.TEAS
+              })}>Update</button>
               {tea.name} by {tea.brand}
             </li>
           )
