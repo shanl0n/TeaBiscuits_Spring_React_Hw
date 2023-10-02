@@ -27,7 +27,6 @@ const TeasContainer = () => {
   };
 
   const handleTeaSubmit = (newTea) => {
-    console.log(newTea);
     if (newTea.id) {
       handleTeaUpdate(newTea);
       return;
